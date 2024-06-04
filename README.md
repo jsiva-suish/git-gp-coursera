@@ -117,6 +117,22 @@ def get_offer_items():
     rows = cursor.fetchall()
     return [Item(id=row[0], name=row[1], price=row[2], is_offer=bool(row[3])) for row in rows]
 ```
+- Validation error
+```python
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+...
+@app.exception_handler(RequestValidationError)
+def validation_exception_handler(request, exc):
+    return JSONResponse(status_code=400, content={"message": "Validation error", "errors": exc.errors()})
+```
+- Run script src/app.py to start API
+```python
+# Add this to end of your code
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+```
 
 ## Conventional commit styles
 
